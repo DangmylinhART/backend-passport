@@ -12,10 +12,10 @@ function getUniqueErrorMessage(error) {
         let whereToSlice = fieldName.lastIndexOf(":") + 2
 
         output = fieldName.slice(whereToSlice) + " Already Exists";
-    } catch(e) {
+    } catch (e) {
         output = "Unique field already exists"
     }
- return output;
+    return output;
 
 }
 
@@ -24,7 +24,17 @@ function getErrorMessage(err) {
     let message = '';
 
     if (err.code) {
-        switch(err.code) {
+        switch (err.code) {
+            case 401:
+                errorObj.statusCode = err.code
+                errorObj.message = err.message
+                return errorObj
+
+            case 404:
+                errorObj.statusCode = err.code
+                errorObj.message = err.message
+                return errorObj
+
             case 11000:
             case 11001:
                 errorObj.statusCode = 409;
@@ -32,7 +42,7 @@ function getErrorMessage(err) {
                 return errorObj;
             default:
                 errorObj.statusCode = 500
-                errorObj.message= 'something went wrong'
+                errorObj.message = 'something went wrong'
                 return errorObj;
         }
     } else if (err.message) {
@@ -46,6 +56,8 @@ function getErrorMessage(err) {
             }
         }
     }
+
+    // console.log('errorObj', errorObj)
     return message
 }
 
